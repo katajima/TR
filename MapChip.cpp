@@ -3,16 +3,7 @@
 #include <math.h>
 #include<imgui.h>
 
-//指定範囲でクリップする.
-//#define CLIP(e,l,h) (min(max(e,l),h))
 
-//配列の要素数取得.
-#define COUNTOF(a) ( sizeof( a ) / sizeof( a[0] ) )
-
-#define HASH_CODE_MAX       (256)
-#define HASH_CODE_TABLE_NUM     (HASH_CODE_MAX*2)
-
-int g_HashCode[HASH_CODE_TABLE_NUM] = {};
 
 float PERSISTENCE = 0.5f; //揺れ幅
 
@@ -77,19 +68,25 @@ float noise(float x, float y) {
 
 //シード値を利用
 // パーリンノイズの基本ノイズ関数
+// 2次元のパーリンノイズ
 float noise2(float x, float y) {
 	int X = (int)floor(x) & 255;
 	int Y = (int)floor(y) & 255;
 	x -= floor(x);
 	y -= floor(y);
+	// 補間をスムーズにするためのカーブを適用
 	float u = fade(x);
 	float v = fade(y);
+	// ハッシュテーブルの参照
 	int A = hashT[X] + Y;
 	int B = hashT[X + 1] + Y;
+	// グラディエントベクトルとドット積の計算
+	// grad関数を使って、各グリッド点での勾配ベクトルを計算
 	float n00 = grad(hashT[A], x, y);
 	float n01 = grad(hashT[A + 1], x, y - 1);
 	float n10 = grad(hashT[B], x - 1, y);
 	float n11 = grad(hashT[B + 1], x - 1, y - 1);
+	// 線形補間
 	float n0 = lerp(u, n00, n01);
 	float n1 = lerp(u, n10, n11);
 	return lerp(v, n0, n1);

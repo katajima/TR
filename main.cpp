@@ -2,7 +2,7 @@
 #include <Struct.h>
 #include<MapChip.h>
 
-const char kWindowTitle[] = "LE2B_06_カタジマ_ロウノシン_タイトル";
+const char kWindowTitle[] = "LE2B_06_カタジマ_ロウノシン_TR";
 
 // Windowsアプリでのエントリーポイント(main関数)
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
